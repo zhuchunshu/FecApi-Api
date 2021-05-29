@@ -1,4 +1,5 @@
 {
-    "port":"7000",
-    "servername":"FecApi"
+    "port":7000,
+    "servername":"FecApi",
+    "author": "Inkedus"
 }

@@ -12,5 +12,6 @@ func ReadFile(path string) string {
 		return ""
 	}
 	return string(data)
-
 }
+
+
