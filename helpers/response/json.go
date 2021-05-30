@@ -8,21 +8,35 @@ import (
 	"runtime"
 	"time"
 )
-
-func JsonApi(code int,result string,data types.Map) types.Map{
-	ServerData:=config.GetServerConfig()
+var ServerData string = config.GetServerConfig()
+func JsonApi(code int, success bool, data types.Map) types.Map {
 	data = types.Map{
 		"code":   code,
-		"result": result,
+		"success": success,
 		"data":   data,
 		"server": types.Map{
 			"ServerName": helpers.Json_decode(ServerData, "servername"),
 			"version":    app.Version,
 			"CpuCore":    runtime.NumCPU(),
-			"date" : time.Now(),
-			"author":helpers.Json_decode(ServerData, "author"),
+			"date":       time.Now(),
+			"author":     helpers.Json_decode(ServerData, "author"),
 		},
 	}
 
 	return data
+}
+
+func StringApi(code int, success bool, data string) types.Map {
+	return types.Map{
+		"code":   code,
+		"success": success,
+		"data":   data,
+		"server": types.Map{
+			"ServerName": helpers.Json_decode(ServerData, "servername"),
+			"version":    app.Version,
+			"CpuCore":    runtime.NumCPU(),
+			"date":       time.Now(),
+			"author":     helpers.Json_decode(ServerData, "author"),
+		},
+	}
 }
