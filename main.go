@@ -20,8 +20,10 @@ func main() {
 
 	// 初始化数据库
 	initDatabase()
+
 	// 注册路由
 	routes.InitRouters(app)
+
 
 	// 设置端口
 	Serverport := helpers.Json_decode(ServerConfig, "port")
