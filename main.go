@@ -24,10 +24,10 @@ func main() {
 	// 注册路由
 	routes.InitRouters(app)
 
-
 	// 设置端口
-	Serverport := helpers.Json_decode(ServerConfig, "port")
+	Serverport := helpers.JsonDecode(ServerConfig, "port")
 	server := app.Listen(":" + Serverport)
 	log.Fatal(server)
 }
+
 

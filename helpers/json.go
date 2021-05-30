@@ -6,7 +6,7 @@ import (
 	"github.com/zhuchunshu/FecApi-Api/helpers/types"
 )
 
-func Json_decode(json string, path string) string {
+func JsonDecode(json string, path string) string {
 	value := gjson.Get(json, path)
 	return value.String()
 }

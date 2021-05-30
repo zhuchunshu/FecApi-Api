@@ -15,12 +15,13 @@ func JsonApi(code int, success bool, data types.Map) types.Map {
 		"success": success,
 		"data":   data,
 		"server": types.Map{
-			"ServerName": helpers.Json_decode(ServerData, "servername"),
+			"ServerName": helpers.JsonDecode(ServerData, "servername"),
 			"version":    app.Version,
 			"CpuCore":    runtime.NumCPU(),
 			"date":       time.Now(),
-			"author":     helpers.Json_decode(ServerData, "author"),
+			"author":     helpers.JsonDecode(ServerData, "author"),
 		},
+		"api" : app.ApiData,
 	}
 
 	return data
@@ -32,11 +33,12 @@ func StringApi(code int, success bool, data string) types.Map {
 		"success": success,
 		"data":   data,
 		"server": types.Map{
-			"ServerName": helpers.Json_decode(ServerData, "servername"),
+			"ServerName": helpers.JsonDecode(ServerData, "servername"),
 			"version":    app.Version,
 			"CpuCore":    runtime.NumCPU(),
 			"date":       time.Now(),
-			"author":     helpers.Json_decode(ServerData, "author"),
+			"author":     helpers.JsonDecode(ServerData, "author"),
 		},
+		"api" : app.ApiData,
 	}
 }

@@ -13,20 +13,27 @@ import (
 	"github.com/zhuchunshu/FecApi-Api/helpers"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 )
 
 func initDatabase() {
 	var err error
 	var GetDatabaseConfig string = config.GetDatabaseConfig()
-	var MysqlConnect string = helpers.Json_decode(GetDatabaseConfig, "connect.mysql")
-	var datas string = helpers.Json_decode(GetDatabaseConfig, "mysql."+MysqlConnect)
-	var db string = helpers.Json_decode(datas, "database")
-	var user string = helpers.Json_decode(datas, "username")
-	var host string = helpers.Json_decode(datas, "host")
-	var port string = helpers.Json_decode(datas, "port")
-	var pwd string = helpers.Json_decode(datas, "password")
+	var MysqlConnect string = helpers.JsonDecode(GetDatabaseConfig, "connect.mysql")
+	var datas string = helpers.JsonDecode(GetDatabaseConfig, "mysql."+MysqlConnect)
+	var db string = helpers.JsonDecode(datas, "database")
+	var user string = helpers.JsonDecode(datas, "username")
+	var host string = helpers.JsonDecode(datas, "host")
+	var port string = helpers.JsonDecode(datas, "port")
+	var pwd string = helpers.JsonDecode(datas, "password")
+	// 数据库连接配置
 	dsn := user + ":" + pwd + "@tcp(" + host + ":" + port + ")/" + db + "?charset=utf8mb4&parseTime=True&loc=Local"
-	database.DBConn, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	// 创建数据库连接
+	database.DBConn, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			SingularTable:true,
+		},
+	})
 	if err != nil {
 		panic("failed to connect database")
 	}

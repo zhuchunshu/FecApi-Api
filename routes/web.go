@@ -16,4 +16,5 @@ func RegisterWebRoutes(route *fiber.App) {
 
 	route.Get("/test",User.GetBooks)
 
+	route.Get("/test/test",Controllers.Tests)
 }
