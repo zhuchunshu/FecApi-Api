@@ -30,6 +30,9 @@ func initDatabase() {
 	dsn := user + ":" + pwd + "@tcp(" + host + ":" + port + ")/" + db + "?charset=utf8mb4&parseTime=True&loc=Local"
 	// 创建数据库连接
 	database.DBConn, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+		SkipDefaultTransaction: false, //禁用默认事务
+		PrepareStmt: true,//缓存预编译语句
+
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable:true,
 		},
