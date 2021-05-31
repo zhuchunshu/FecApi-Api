@@ -11,6 +11,7 @@ import (
 	"github.com/zhuchunshu/FecApi-Api/app"
 	"github.com/zhuchunshu/FecApi-Api/app/Models/Database"
 	"github.com/zhuchunshu/FecApi-Api/app/server/database"
+	database2 "github.com/zhuchunshu/FecApi-Api/helpers/database"
 	"github.com/zhuchunshu/FecApi-Api/helpers/response"
 )
 
@@ -37,5 +38,8 @@ func Api(ctx *fiber.Ctx)error{
 
 func ApiV1(ctx *fiber.Ctx)error{
 	ctx.Set("FecApi-Version", "v1")
+	if database2.GetSwitch("api_v1")==false {
+		return ctx.JSON(response.StringApi(401,false,"此接口未开启"))
+	}
 	return ctx.Next()
 }
