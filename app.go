@@ -8,6 +8,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/hibiken/asynq"
+	"github.com/zhuchunshu/FecApi-Api/app"
 	"github.com/zhuchunshu/FecApi-Api/app/server/config"
 	"github.com/zhuchunshu/FecApi-Api/app/server/database"
 	"github.com/zhuchunshu/FecApi-Api/helpers"
@@ -16,16 +18,18 @@ import (
 	"gorm.io/gorm/schema"
 )
 
+var GetDatabaseConfig string = config.GetDatabaseConfig()
+var MysqlConnect string = helpers.JsonDecode(GetDatabaseConfig, "connect.mysql")
+var datas string = helpers.JsonDecode(GetDatabaseConfig, "mysql."+MysqlConnect)
+var db string = helpers.JsonDecode(datas, "database")
+var user string = helpers.JsonDecode(datas, "username")
+var host string = helpers.JsonDecode(datas, "host")
+var port string = helpers.JsonDecode(datas, "port")
+var pwd string = helpers.JsonDecode(datas, "password")
+
 func initDatabase() {
 	var err error
-	var GetDatabaseConfig string = config.GetDatabaseConfig()
-	var MysqlConnect string = helpers.JsonDecode(GetDatabaseConfig, "connect.mysql")
-	var datas string = helpers.JsonDecode(GetDatabaseConfig, "mysql."+MysqlConnect)
-	var db string = helpers.JsonDecode(datas, "database")
-	var user string = helpers.JsonDecode(datas, "username")
-	var host string = helpers.JsonDecode(datas, "host")
-	var port string = helpers.JsonDecode(datas, "port")
-	var pwd string = helpers.JsonDecode(datas, "password")
+
 	// 数据库连接配置
 	dsn := user + ":" + pwd + "@tcp(" + host + ":" + port + ")/" + db + "?charset=utf8mb4&parseTime=True&loc=Local"
 	// 创建数据库连接
@@ -45,3 +49,9 @@ func initDatabase() {
 	fmt.Println("Database Migrated")
 }
 
+func queue(){
+	r := asynq.RedisClientOpt{Addr: helpers.JsonDecode(GetDatabaseConfig, "redis")}
+	c := asynq.NewClient(r)
+	defer c.Close()
+	app.Jobs=c
+}

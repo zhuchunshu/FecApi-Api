@@ -10,13 +10,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 	gonanoid "github.com/matoous/go-nanoid/v2"
 	"github.com/zhuchunshu/FecApi-Api/app"
+	v11 "github.com/zhuchunshu/FecApi-Api/app/Jobs/V1"
 	"github.com/zhuchunshu/FecApi-Api/app/Models/Database"
 	"github.com/zhuchunshu/FecApi-Api/app/server/database"
 	"github.com/zhuchunshu/FecApi-Api/helpers/String"
 	database2 "github.com/zhuchunshu/FecApi-Api/helpers/database"
 	"github.com/zhuchunshu/FecApi-Api/helpers/response"
-	"net/http"
-	"net/url"
 )
 
 func QQHOOK(ctx *fiber.Ctx) error {
@@ -42,7 +41,8 @@ func QQHOOK(ctx *fiber.Ctx) error {
 		}
 		db.Create(&apinotice)
 		t:=String.Base64Encode([]byte(title+"\n\n\n查看详情:暂无地址"))
-		_, _ = http.PostForm(urls+token+"/private/"+qq+"/"+t, url.Values{})
+
+		go v11.QQHook(urls,qq,t,token)
 		return ctx.JSON(response.StringApi(200,true,"通知信息已发送!"))
 	} else {
 		return ctx.JSON(response.StringApi(404, false, "此接口服务端配置不完整"))
