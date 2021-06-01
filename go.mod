@@ -5,8 +5,6 @@ go 1.16
 require (
 	github.com/andybalholm/brotli v1.0.3 // indirect
 	github.com/gofiber/fiber/v2 v2.10.0
-	github.com/google/uuid v1.2.0 // indirect
-	github.com/hibiken/asynq v0.17.1 // indirect
 	github.com/klauspost/compress v1.12.3 // indirect
 	github.com/matoous/go-nanoid/v2 v2.0.0 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect

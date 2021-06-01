@@ -8,8 +8,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/hibiken/asynq"
-	"github.com/zhuchunshu/FecApi-Api/app"
 	"github.com/zhuchunshu/FecApi-Api/app/server/config"
 	"github.com/zhuchunshu/FecApi-Api/app/server/database"
 	"github.com/zhuchunshu/FecApi-Api/helpers"
@@ -47,11 +45,4 @@ func initDatabase() {
 	fmt.Println("Connection Opened to Database")
 
 	fmt.Println("Database Migrated")
-}
-
-func queue(){
-	r := asynq.RedisClientOpt{Addr: helpers.JsonDecode(GetDatabaseConfig, "redis")}
-	c := asynq.NewClient(r)
-	defer c.Close()
-	app.Jobs=c
 }
