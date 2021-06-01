@@ -26,7 +26,7 @@ func TestPage(ctx *fiber.Ctx)error{
 		if len(text)==0 {
 			return ctx.JSON(response.StringApi(200, true, "缺少参数: text"))
 		}
-		http.PostForm(urls+token+"/private/"+qq+"/"+text,url.Values{})
+		_, _ = http.PostForm(urls+token+"/private/"+qq+"/"+text, url.Values{})
 	}else {
 		return ctx.JSON(response.StringApi(404,false,"此接口服务端配置不完整"))
 	}
