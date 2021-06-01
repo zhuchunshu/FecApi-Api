@@ -30,6 +30,13 @@ type AdminSwitch struct {
 	Status int
 }
 
+type AdminSetting struct {
+	ID int
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	Name   string `json:"name"`
+	Value string
+}
 
 type PersonalAccessToken struct {
 	database.TypeModel
@@ -49,4 +56,8 @@ func (User) TableName() string {
 
 func (AdminSwitch) TableName() string {
 	return "admin_switch"
+}
+
+func (AdminSetting) TableName() string {
+	return "admin_setting"
 }

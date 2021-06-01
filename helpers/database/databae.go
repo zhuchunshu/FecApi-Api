@@ -22,3 +22,11 @@ func GetSwitch(name string)bool{
 		return false
 	}
 }
+
+// 获取站点设置项
+func GetOptions(name string)string{
+	db:=database.DBConn
+	var AdminSetting Database.AdminSetting
+	db.Where("name = ?",name).First(&AdminSetting)
+	return AdminSetting.Value
+}
