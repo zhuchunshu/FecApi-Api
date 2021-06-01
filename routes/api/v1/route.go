@@ -12,5 +12,5 @@ import (
 )
 
 func  RegisterApiV1Routes(route fiber.Router)  {
-	route.Post("/test", V1.TestPage)
+	route.Post("/QQHOOK", V1.QQHOOK)
 }

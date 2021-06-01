@@ -13,6 +13,7 @@ type ApiNotice struct {
 	Title    string
 	Content      string
 	Hash     string
+	UserId uint `gorm:"column:user_id"`
 }
 
 
