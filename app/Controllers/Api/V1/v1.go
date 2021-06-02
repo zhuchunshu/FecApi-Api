@@ -7,6 +7,7 @@
 package V1
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	gonanoid "github.com/matoous/go-nanoid/v2"
 	"github.com/zhuchunshu/FecApi-Api/app"
@@ -32,17 +33,33 @@ func QQHOOK(ctx *fiber.Ctx) error {
 			return ctx.JSON(response.StringApi(200, true, "缺少参数: content (通知内容)"))
 		}
 		db := database.DBConn
-		hash, _ := gonanoid.New()
-		apinotice := Database.ApiNotice{
-			Title:   title,
-			Content: content,
-			Hash:    hash,
-			UserId:app.ApiData.UserId,
-		}
-		db.Create(&apinotice)
-		t:=String.Base64Encode([]byte(title+"\n\n\n查看详情:暂无地址"))
 
-		go v11.QQHook(urls,qq,t,token)
+		var count int64
+		var ApiNotice Database.ApiNotice
+		var NoticeHash string
+		db.Model(&ApiNotice).Where("content = ?", content).Count(&count)
+		if count==0 {
+			hash, _ := gonanoid.New()
+			apinotice := Database.ApiNotice{
+				Title:   title,
+				Content: content,
+				Hash:    hash,
+				UserId:app.ApiData.UserId,
+			}
+			db.Create(&apinotice)
+			NoticeHash=apinotice.Hash
+		}else{
+			db.Where("content = ?",content).First(&ApiNotice)
+			NoticeHash=ApiNotice.Hash
+		}
+		if len(database2.GetOptions("api-v1-qqhook-view"))>=1 {
+			info:=fmt.Sprintf(database2.GetOptions("api-v1-qqhook-view"),NoticeHash)
+			t:=String.Base64Encode([]byte(title+"\n\n\n查看详情:"+info))
+			go v11.QQHook(urls,qq,t,token)
+		}else {
+			t:=String.Base64Encode([]byte(title+"\n\n查看详情:"+"服务端未配置视图地址"))
+			go v11.QQHook(urls,qq,t,token)
+		}
 		return ctx.JSON(response.StringApi(200,true,"通知信息已发送!"))
 	} else {
 		return ctx.JSON(response.StringApi(404, false, "此接口服务端配置不完整"))
