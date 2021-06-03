@@ -8,6 +8,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/zhuchunshu/FecApi-Api/app/server/config"
 	"github.com/zhuchunshu/FecApi-Api/app/server/database"
 	"github.com/zhuchunshu/FecApi-Api/helpers"
@@ -16,14 +17,14 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-var GetDatabaseConfig string = config.GetDatabaseConfig()
-var MysqlConnect string = helpers.JsonDecode(GetDatabaseConfig, "connect.mysql")
-var datas string = helpers.JsonDecode(GetDatabaseConfig, "mysql."+MysqlConnect)
-var db string = helpers.JsonDecode(datas, "database")
-var user string = helpers.JsonDecode(datas, "username")
-var host string = helpers.JsonDecode(datas, "host")
-var port string = helpers.JsonDecode(datas, "port")
-var pwd string = helpers.JsonDecode(datas, "password")
+var GetDatabaseConfig = config.GetDatabaseConfig()
+var MysqlConnect = helpers.JsonDecode(GetDatabaseConfig, "connect.mysql")
+var datas = helpers.JsonDecode(GetDatabaseConfig, "mysql."+MysqlConnect)
+var db = helpers.JsonDecode(datas, "database")
+var user = helpers.JsonDecode(datas, "username")
+var host = helpers.JsonDecode(datas, "host")
+var port = helpers.JsonDecode(datas, "port")
+var pwd = helpers.JsonDecode(datas, "password")
 
 func initDatabase() {
 	var err error
@@ -33,10 +34,10 @@ func initDatabase() {
 	// 创建数据库连接
 	database.DBConn, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		SkipDefaultTransaction: false, //禁用默认事务
-		PrepareStmt: true,//缓存预编译语句
+		PrepareStmt:            true,  //缓存预编译语句
 
 		NamingStrategy: schema.NamingStrategy{
-			SingularTable:true,
+			SingularTable: true,
 		},
 	})
 	if err != nil {
