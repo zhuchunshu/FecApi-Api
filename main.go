@@ -1,20 +1,21 @@
 package main
 
 import (
+	"log"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/zhuchunshu/FecApi-Api/app/server/config"
 	"github.com/zhuchunshu/FecApi-Api/helpers"
 	"github.com/zhuchunshu/FecApi-Api/routes"
-	"log"
 )
 
 // 服务配置
-var ServerConfig string = config.GetServerConfig()
+var ServerConfig = config.GetServerConfig()
 
 func main() {
 	app := fiber.New(fiber.Config{
-		ServerHeader:  "FecApi",
+		ServerHeader: "FecApi",
 	})
 	app.Use(logger.New())
 
@@ -29,5 +30,3 @@ func main() {
 	server := app.Listen(":" + Serverport)
 	log.Fatal(server)
 }
-
-
